@@ -9,7 +9,7 @@
     <artifactId>boot-homework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>boot-homework</name>
-    <description>Spring Boot REST API con productos</description>
+    <description>Spring Boot REST API para creacion y busqueda de productos</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -75,6 +75,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${project.parent.version}</version>
             </plugin>
         </plugins>
     </build>

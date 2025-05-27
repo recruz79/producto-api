@@ -16,7 +16,7 @@ public class ProductService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-    public ProductService(ProductRepository productoRepository) {
+    public ProductService(final ProductRepository productoRepository) {
         this.productoRepository = productoRepository;
     }
 
