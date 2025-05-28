@@ -39,7 +39,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void createProduct_shouldSaveAndReturnProduct() {
+    void shouldSaveAndReturnProduct() {
         when(productRepository.save(any(Product.class))).thenReturn(mockProduct);
 
         Product created = productService.createProduct(mockProduct);
@@ -50,7 +50,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void getById_shouldReturnProductWhenExists() {
+    void shouldReturnProductWhenExists() {
         when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
 
         Product result = productService.getById(1L);
@@ -60,16 +60,18 @@ class ProductServiceTest {
     }
 
     @Test
-    void getById_shouldThrowExceptionWhenProductDoesNotExist() {
+    void shouldThrowExceptionWhenProductDoesNotExist() {
         when(productRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class, () -> {
             productService.getById(99L);
         });
+
+        verify(productRepository).findById(99L);
     }
 
     @Test
-    void findByDescription_shouldReturnListOfProducts() {
+    void shouldReturnListOfProducts() {
         List<Product> products = List.of(mockProduct);
         when(productRepository.findByDescriptionContainingIgnoreCase("Notebook")).thenReturn(products);
 

@@ -6,7 +6,6 @@ import com.producto.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -15,10 +14,10 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService productoService;
+    private final ProductService productService;
 
     public ProductController(final ProductService productService) {
-        this.productoService = productService;
+        this.productService = productService;
     }
 
     @PostMapping
@@ -27,18 +26,18 @@ public class ProductController {
         product.setDescription(request.getDescription());
         product.setQuantity(request.getQuantity());
         product.setPrice(request.getPrice());
-        Product savedProduct = productoService.createProduct(product);
+        Product savedProduct = productService.createProduct(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
-        Product product = productoService.getById(id);
+        Product product = productService.getById(id);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<Product>> findByDescription(@RequestParam String description) {
-        return ResponseEntity.ok(productoService.findByDescription(description));
+        return ResponseEntity.ok(productService.findByDescription(description));
     }
 }

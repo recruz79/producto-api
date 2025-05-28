@@ -20,9 +20,9 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Product producto) {
-        logger.info("Creando producto: {}", producto);
-        return productRepository.save(producto);
+    public Product createProduct(Product product) {
+        logger.info("Creando producto: {}", product);
+        return productRepository.save(product);
     }
 
     public Product getById(Long id) {
@@ -34,16 +34,9 @@ public class ProductService {
                 });
     }
 
-    public List<Product> findByDescription(String descripcion) {
-        logger.info("Buscando producto por descripcion: {}", descripcion);
-        List<Product> productos = productRepository.findByDescriptionContainingIgnoreCase(descripcion);
-
-        if (productos.isEmpty()) {
-            logger.error("No se encontraron productos con la descripción: {}", descripcion);
-            throw new ProductNotFoundException("No se encontraron productos con la descripción: " + descripcion);
-        }
-
-        return productos;
+    public List<Product> findByDescription(String description) {
+        logger.info("Buscando producto por descripcion: {}", description);
+        return  productRepository.findByDescriptionContainingIgnoreCase(description);
     }
 
 }
