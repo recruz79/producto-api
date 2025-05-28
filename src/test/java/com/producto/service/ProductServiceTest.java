@@ -1,5 +1,6 @@
 package com.producto.service;
 
+import com.producto.exception.ProductNotFoundException;
 import com.producto.model.Product;
 import com.producto.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,29 +53,31 @@ class ProductServiceTest {
     void getById_shouldReturnProductWhenExists() {
         when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
 
-        Optional<Product> result = productService.getById(1L);
+        Product result = productService.getById(1L);
 
-        assertTrue(result.isPresent());
-        assertEquals("Notebook", result.get().getDescription());
+        assertNotNull(result);
+        assertEquals("Notebook", result.getDescription());
     }
 
     @Test
-    void getById_shouldReturnEmptyWhenNotExists() {
+    void getById_shouldThrowExceptionWhenProductDoesNotExist() {
         when(productRepository.findById(99L)).thenReturn(Optional.empty());
 
-        Optional<Product> result = productService.getById(99L);
-
-        assertFalse(result.isPresent());
+        assertThrows(ProductNotFoundException.class, () -> {
+            productService.getById(99L);
+        });
     }
 
     @Test
     void findByDescription_shouldReturnListOfProducts() {
         List<Product> products = List.of(mockProduct);
-        when(productRepository.findByDescriptionContainingIgnoreCase("lap")).thenReturn(products);
+        when(productRepository.findByDescriptionContainingIgnoreCase("Notebook")).thenReturn(products);
 
-        List<Product> result = productService.findByDescription("lap");
+        List<Product> result = productService.findByDescription("Notebook");
 
         assertEquals(1, result.size());
         assertEquals("Notebook", result.get(0).getDescription());
+
+        verify(productRepository).findByDescriptionContainingIgnoreCase("Notebook");
     }
 }

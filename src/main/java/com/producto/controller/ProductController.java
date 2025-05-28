@@ -33,10 +33,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
-        return productoService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Producto no encontrado, id: " + id));
+        Product product = productoService.getById(id);
+        return ResponseEntity.ok(product);
     }
 
     @GetMapping("/search")
