@@ -1,5 +1,8 @@
 package com.producto.exception;
 
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +17,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiError> handleNotFound(ResponseStatusException ex, WebRequest request) {
         ApiError error = new ApiError(
@@ -22,6 +27,8 @@ public class GlobalExceptionHandler {
                 ex.getReason(),
                 request.getDescription(false).replace("uri=", "")
         );
+
+        logger.error("Unhandled exception occurred", ex);
         return new ResponseEntity<>(error, ex.getStatus());
     }
 
@@ -34,6 +41,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("errors", errors);
+
+        logger.error("Unhandled exception occurred", ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
